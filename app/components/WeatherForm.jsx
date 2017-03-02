@@ -1,10 +1,12 @@
 import React from 'react';
 
 const WeatherForm = ({ onSubmitForm, onChangeCity, location }) => (
-  <form onSubmit={onSubmitForm}>
-    <input value={location} onChange={onChangeCity} />
-    <input type="submit" value="Get Weather" />
-  </form>
+  <div>
+    <form onSubmit={onSubmitForm}>
+      <input type="text" value={location} onChange={onChangeCity} />
+      <button className="button expanded hollow">Get Weather</button>
+    </form>
+  </div>
 );
 
 WeatherForm.propTypes = {

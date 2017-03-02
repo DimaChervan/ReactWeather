@@ -1,7 +1,7 @@
 import React from 'react';
 
 const WeatherMessage = ({location, temp}) => (
-  <h3>It's it {temp} in {location}</h3>
+  <h3 className="text-center">It's it {temp} in {location}</h3>
 );
 
 WeatherMessage.propTypes = {
