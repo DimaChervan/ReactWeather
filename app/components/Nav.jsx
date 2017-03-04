@@ -2,9 +2,22 @@ import React from 'react';
 import { Link, IndexLink } from 'react-router';
 
 class Nav extends React.Component {
+  state = {
+    city: ''
+  }
+
+  onChangeCity = (event) => {
+    this.setState({city: event.target.value});
+  }
+
   onSearch = (event) => {
     event.preventDefault();
-    console.log('yep');
+
+    const location = encodeURIComponent(this.state.city);
+    if (location.length > 0) {
+      this.setState({city: ''});
+      window.location.hash = `#/?location=${location}`;
+    }
   }
 
   render() {
@@ -28,7 +41,7 @@ class Nav extends React.Component {
           <form onSubmit={this.onSearch}>
             <ul className="menu">
               <li>
-                <input type="search" placeholder="Search weather by city" />
+                <input type="search" placeholder="Search weather by city"  value={this.state.city} onChange={this.onChangeCity} />
               </li>
               <li>
                 <input type="submit" className="button" value="Get Weather" />

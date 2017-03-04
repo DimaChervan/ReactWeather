@@ -13,6 +13,10 @@ class Weather extends React.Component {
   handleSubmitForm = (event) => {
     event.preventDefault();
     const location = this.state.location;
+    this.handleSearch(location);
+  }
+
+  handleSearch(location) {
     if (location.length > 0) {
       this.setState({
         isLoading: true,
@@ -32,6 +36,26 @@ class Weather extends React.Component {
   handleChangeCity = (event) => {
     const location = event.target.value;
     this.setState({location});
+  }
+
+  componentDidMount() {
+    const location = this.props.location.query.location;
+
+    if (location && location.length > 0) {
+      this.setState({location});
+      this.handleSearch(location);
+      window.location.hash = '#/';
+    }
+  }
+
+  componentWillReceiveProps(newProps) {
+    const location = newProps.location.query.location;
+
+    if (location && location.length > 0) {
+      this.setState({location});
+      this.handleSearch(location);
+      window.location.hash = '#/';
+    }
   }
 
   render() {
