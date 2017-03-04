@@ -2,6 +2,7 @@ import React from 'react';
 import WeatherForm from 'WeatherForm';
 import WeatherMessage from 'WeatherMessage';
 import { getTemp } from 'openWeatherMap';
+import ErrorModal from 'ErrorModal';
 
 class Weather extends React.Component {
   state = {
@@ -13,12 +14,17 @@ class Weather extends React.Component {
     event.preventDefault();
     const location = this.state.location;
     if (location.length > 0) {
-      this.setState({isLoading: true});
+      this.setState({
+        isLoading: true,
+        errorMessage: undefined
+      });
       getTemp(location)
         .then(temp => this.setState({temp, isLoading: false}))
         .catch(err => {
-          console.log(err);
-          this.setState({isLoading: false});
+          this.setState({
+            isLoading: false,
+            errorMessage: err.message
+          });
         });
     }
   }
@@ -29,13 +35,19 @@ class Weather extends React.Component {
   }
 
   render() {
-    const {temp, location, isLoading} = this.state;
+    const {temp, location, isLoading, errorMessage} = this.state;
 
     const renderMessage = () => {
       if (isLoading) {
         return <h3 className="text-center">Fetching weather...</h3>
-      } else if (location && temp) {
+      } else if (location && typeof temp === 'number') {
         return <WeatherMessage location={location} temp={temp} />
+      }
+    };
+
+    const renderError = () => {
+      if (typeof errorMessage === 'string') {
+        return <ErrorModal message={errorMessage} />
       }
     };
 
@@ -47,6 +59,7 @@ class Weather extends React.Component {
           onChangeCity={this.handleChangeCity}
           location={location} />
         {renderMessage()}
+        {renderError()}
       </div>
     );
   }

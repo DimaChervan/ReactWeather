@@ -8,7 +8,7 @@ export const getTemp = (location) => {
 
   return axios.get(requestUrl)
     .then(res => res.data.main.temp)
-    .catch(res => {
-      return new Error(res.data.message);
+    .catch(function(res) {
+      throw new Error(res.message);
     });
 };
